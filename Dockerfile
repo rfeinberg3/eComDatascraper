@@ -19,17 +19,14 @@ COPY /requirements.txt /app/requirements.txt
 RUN pip3 install -r requirements.txt
 
 # Copy in the source code
-COPY /tests/sandbox_test.py /app/sandbox_test.py
+COPY /sandbox_scraper.py /app/sandbox_scraper.py
 COPY /datascraper/ /app/datascraper
 COPY /config /app/config
 
 # Create directory to retrieve volume dataset
-RUN mkdir /volume && \
-    cd /volume && \
-    mkdir /outputs && \
-    cd /..
+RUN mkdir -p /volume/item_data
 
 # Copy in keywords list(s) to scrape
 COPY /keywords /app/keywords
 
-#CMD ["python3", "sandbox_test.py"]
+ENTRYPOINT ["python3", "sandbox_scraper.py"]

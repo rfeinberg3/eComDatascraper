@@ -31,20 +31,23 @@ pip install -r requirements.txt
 
 ### Running with Docker
 ```bash
-docker create volume scraper_data
+docker volume create scraper_data
 docker build -t scraper:v1 .
-docker run -v scraper_data:/app/volume scraper:v1
+docker run -it -v scraper_data:/app/volume scraper:v1
 ```
 
 ### Running Locally
-1. Navigate to the [src](https://github.com/rfeinberg3/eBayAutoSeller/tree/main/DataScraper/src) directory.
-2. Use the following imports to get started:
+1. Obtain a sandbox keyset via [eBay's developer program](https://developer.ebay.com/develop/get-started). And place credientails into the `config` directory. (Details and example in `config`).
+2. Clone this repository, and open a script in this directory.
+3. Use the following imports to get started:
    ```python
    import json
-   from datacraper import Scraper
+   from datacraper import Scraper, ScraperUtil
    ```
-3. Create a text file in the `keywords` directory with your desired search keywords. The `ScraperUtil` class will handle the rest.
-4. Refer to `tests/sandbox_test.py` for examples on using the `Scraper` class and its `search_and_scrape()` method.
+4. Create a text file in the `keywords` directory with your desired search keywords. The `ScraperUtil` class will handle reading in keyword data.
+5. Use the list of keywords generated from `ScraperUtil` with `Scraper.search_and_scrape()` to start scraping item data.  
+
+Refer to `tests/sandbox_test.py` for examples on using the `Scraper` and `ScraperUtil` classes.
 
 ## Data Collection
 
@@ -54,7 +57,7 @@ The scraper searches for up to 200 results for each keyword. For tips on generat
 
 ## Data
 
-Sample outputs can be found in the `outputs` directory. These were generated using eBay API search calls with a limit of 200 items per keyword.
+Sample outputs can be found in the `tests/outputs` directory. These were generated using eBay API search calls with a limit of 200 items per keyword.
 
 ### Generating Keywords
 To create diverse keyword lists, you can use AI tools like ChatGPT. Here's an example prompt:
