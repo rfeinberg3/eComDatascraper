@@ -108,4 +108,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 - [eBay Developer Program](https://developer.ebay.com/develop/get-started)
 
 ## License
-[Insert your chosen license here]
+Apache-2.0
