@@ -104,5 +104,8 @@ Due to limitations in the API's item description data, Selenium is used to scrap
 ## Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+## Acknowledgments
+- [eBay Developer Program](https://developer.ebay.com/develop/get-started)
+
 ## License
 [Insert your chosen license here]
