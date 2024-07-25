@@ -1,45 +1,69 @@
 # eCom Item Data Scraper
 
-## Testing Setup
+## Overview
+This project is a data scraper for eBay, designed to collect item data for model training purposes. It uses eBay's Sandbox environment APIs to gather diverse and high-quality e-commerce data.
 
-### Install External Libraries
-- Using conda:
+## Key Features
+- Utilizes eBay's Browse API for efficient data collection
+- Implements Selenium for extracting item descriptions
+- Supports both sandbox and production environments
+- Provides flexible keyword-based searching
+
+## Installation
+
+### Prerequisites
+- Python 3.x
+- Docker (optional)
+
+### Install Dependencies
+Using conda:
 ```bash
 conda create --file requirements.txt --name scraper
 conda activate scraper
 ```
-- Using pip:
+
+Using pip:
 ```bash
 pip install -r requirements.txt
 ```
 
 ## Usage
 
-### Run
-- Using Docker:
+### Running with Docker
 ```bash
-docker create volume scraper_data
+docker volume create scraper_data
 docker build -t scraper:v1 .
-docker run -v scraper_data:/app/volume scraper:v1
+docker run -it -v scraper_data:/app/volume scraper:v1
 ```
 
-- Open a script in this directory, and start with the imports below to get started. 
-```
-import json
-from datacraper import Scraper
-```
-- In `keywords`, create a text file containing keywords for items you would like data about. 
-- `tests/sandbox_test.py` demonstrates how to use the scraper class, specifically its search_and_scrape() method.
-- `tests/sandbox_test.py` iterates through a list of newline-separated keywords searching for up to 200 results for each keyword. A decent method for auto-generating a viable list of keywords is described in the [Data](https://github.com/rfeinberg3/eBayAutoSeller/blob/main/DataScraper/README.md#data) section below. 
-- !!! An important note about this method is that it **yields** a generator where each iteration is a single search result providing all of an item's data. 
+### Running Locally
+1. Obtain a sandbox keyset via [eBay's developer program](https://developer.ebay.com/develop/get-started). And place credientails into the `config` directory. (Details and example in `config`).
+2. Clone this repository, and open a script in this directory.
+3. Use the following imports to get started:
+   ```python
+   import json
+   from datacraper import Scraper, ScraperUtil
+   ```
+4. Create a text file in the `keywords` directory with your desired search keywords. The `ScraperUtil` class will handle reading in keyword data.
+5. Use the list of keywords generated from `ScraperUtil` with `Scraper.search_and_scrape()` to start scraping item data.  
+
+Refer to `tests/sandbox_test.py` for examples on using the `Scraper` and `ScraperUtil` classes.
+
+## Data Collection
+
+The scraper searches for up to 200 results for each keyword. For tips on generating effective keyword lists, see the [Data](#data) section below.
+
+**Note**: The `search_and_scrape()` method yields a generator where each iteration provides a single search result with complete item data.
 
 ## Data
 
-- [outputs](https://github.com/rfeinberg3/eBayAutoSeller/tree/main/DataScraper/outputs) was generated using eBay API search calls on a set of keywords with the limit set to 200 (`Scraper.search_and_scrape(keyword, 200)`).
+Sample outputs can be found in the `tests/outputs` directory. These were generated using eBay API search calls with a limit of 200 items per keyword.
 
-- Keyword text file examples can be seen in the [src/keywords](https://github.com/rfeinberg3/eBayAutoSeller/tree/main/DataScraper/src/keywords) directory. To obtain the lists, ChatGPT-4o was prompted for a keyword list. An example prompt:
-```string
-Give me a common and diverse set of items you would typically find on eBay such as these:
+### Generating Keywords
+To create diverse keyword lists, you can use AI tools like ChatGPT. Here's an example prompt:
+
+```
+Give me a common and diverse set of items typically found on eBay, such as:
 Watch
 Technology
 Cars
@@ -47,86 +71,38 @@ Games
 Shoes
 Clothes
 
-I am prompting a data scraper to search these items and collect their data for model training. Extend the list above with as many items as you deem necessary for a diverse model training dataset. Format your response as a newline separated item keywords like above.
+Extend this list with items necessary for a diverse model training dataset. Format your response as newline-separated item keywords.
 ```
 
-## Background
+## Why eBay?
 
-### Why eBay?
+eBay was chosen for this project due to several advantages:
+1. Open-Source API Support
+2. Extensive Developer Support
+3. Vast and High-Quality Data
+4. RESTful APIs (offering scalability, atomicity, flexibility, and performance)
 
-With numerous e-commerce websites available, why choose eBay? While it may not be everyone's favorite e-commerce platform, eBay stands out for several critical reasons:
-
-1. **Open-Source API Support:** eBay is the most well-known e-commerce website that supports open-source RESTful API calls. Unlike more popular services like Facebook Marketplace and OfferUp, eBay offers public APIs.
-
-2. **Extensive Developer Support:** eBay provides consistent updates, maintenance, and community engagement events, ensuring a reliable and up-to-date API service.
-
-3. **Vast and High-Quality Data:** eBay offers superior data quantity and quality compared to sites like Etsy or Shopify. This data is crucial for training a model to generate descriptions of everyday items for resale. Unlike Shopify and Etsy, which cater more to entrepreneurial startups, eBay's data is well-suited for this purpose.
-
-#### eBay’s RESTful APIs
-
-Another reason for using eBay’s API service is its transition from traditional APIs to REST-based APIs. This shift justifies using this service due to several advantages:
-
-- **Scalability:** REST APIs are stateless, making them highly scalable and capable of handling large volumes of requests efficiently.
-
-- **Atomicity of Calls:** Each API call in a RESTful system is atomic, meaning it is complete and self-contained, simplifying error handling and ensuring consistent interactions.
-
-- **Flexibility:** REST APIs are flexible, supporting multiple types of calls and data formats. They can adapt and evolve without breaking existing integrations.
-
-- **Performance:** REST APIs leverage HTTP caching mechanisms, reducing server load and improving response times for better overall performance.
-
-
-## Notes 
+## Development Notes
 
 ### Sandbox Mode
-Unfortunately, eBay's production API keys cannot be granted to developers simply because they want to work on a personal project, and will only be granted to companies or individuals under strict contract and monetary promise. However, eBay generously has created and maintained a rich sandbox environment that allows developers to work/test on a simulated eBay website with all the same APIs (for free)! Due to the large amount of quality item postings on Sandbox eBay, this means developing this project in this environment hardly comes with any downsides!
+This project uses eBay's Sandbox environment, which provides a rich simulated eBay website for testing and development.
 
-#### Signing Up to be a Developer
-Signing up with eBay's developer program to access their sandbox APIs is simple and only takes a day for verification. Follow this link to sign up for API access (it's free!): [eBay Developer Program](https://developer.ebay.com/develop/get-started)
+### eBay Developer Program
+To access eBay's Sandbox APIs, sign up for the [eBay Developer Program](https://developer.ebay.com/develop/get-started) (it's free and verification usually takes about a day).
 
-### The Right API: Buy APIs -> Browse API
-With so many APIs to choose from, which one should we use? The goal is to obtain as much information about as many items as possible with minimal effort. eBay's Browse API (from the home developer page go to APIs -> RESTful APIs -> Buy APIs -> Browse API) provides the one golden call we'll need to collect tons of high-quality data: the **search** call.
+### API Selection
+This project uses the Browse API from eBay's Buy APIs, specifically the `search` call, which provides comprehensive item data.
 
-Example Call Request Using search:
-https://api.sandbox.ebay.com/buy/browse/v1/item_summary/search?q=watch&limit=3
-
-Respective Output Example (some lines redacted):
-`{"itemId": "v1|110554920324|0", "title": "Szanto Heritage Aviator Watches, Black Dial, Tan Strap, Gun Gray, One : SZ 2757", ...REDACTED LINES..., "itemWebUrl": "http://www.sandbox.ebay.com/itm/Szanto-Heritage-Aviator-Watches-Black-Dial-Tan-Strap-Gun-Gray-One-SZ-2757-/110554920324?hash=item19bd963584:i:110554920324", "itemLocation": {"city": "Northbrook", "postalCode": "600**", "country": "US"}, "adultOnly": false, "legacyItemId": "110554920324", "availableCoupons": false, "itemCreationDate": "2024-05-02T20:25:40.000Z", ...REDACTED LINES...}`
-
-### Selenium and the Description Parsing Issue
-You may have noticed that the output is missing a crucial detail: the item description. According to eBay’s documentation, the shortDescriptions key should hold a short text description of the item. However, this value is not present for most sandbox items.
-
-Since eBay formats their item descriptions as markups, effort is needed to scrape the markup data from the item description text. We can retrieve the item listing URL from the `"itemWebUrl"` field, as shown above. This URL can be opened with a Selenium WebDriver, using Chrome in this case.
-
-Despite testing simple request parsing, it became clear that the URL must be loaded in a browser to obtain the necessary script containing the item description text. For more details, see `DataScraper/src/scraper.py`.
-
-The same sample after adding the item description to the dictionary (some lines redacted):
-```{
-    "itemId": "v1|110554920324|0",
-    "title": "Szanto Heritage Aviator Watches, Black Dial, Tan Strap, Gun Gray, One : SZ 2757",
-    ...REDACTED...
-    "itemWebUrl": "http://www.sandbox.ebay.com/itm/Szanto-Heritage-Aviator-Watches-Black-Dial-Tan-Strap-Gun-Gray-One-SZ-2757-/110554920324?hash=item19bd963584:i:110554920324",
-    "itemLocation": {
-        "city": "Northbrook",
-        "postalCode": "600**",
-        "country": "US"
-    },
-    "adultOnly": false,
-    "legacyItemId": "110554920324",
-    "availableCoupons": false,
-    "itemCreationDate": "2024-05-02T20:25:40.000Z",
-    "topRatedBuyingExperience": false,
-    "priorityListing": false,
-    "listingMarketplaceId": "EBAY_US",
-    "item_description": "Featured Items\nSport Optics\nHunting\nShooting Gear\nOutdoor Gear\nApparel\nEyewear\nMilitary & Tactical\nPolice, EMS & Fire\nSports & Hobbies\nLab & Science\nEverything Else\nCategories\nApparel\nUndershirts\nEverything Else\nCamera Cases\nHunting\nRiflescope Mounts and Bases\nShooting Gear\nTargets\nSport Optics\nBinoculars\nOpen Box Specials\nPopular Brands\nZeiss\nVortex\nBurris\nBushnell\nLeopold\nNightforce\nNikon\nThis Stock Photo may not match the actual item listed.\nThis listing is for Model # SZ-2757\nSzanto Heritage Aviator Watches\nSpecification: Szanto Heritage Aviator Watches, Black Dial, Tan Strap, Gun Gray, One Size, SZ 2757\nProduct Code: SZA-WT-HL04-SZ-2757\nModel Number: 
-    ... 30 lines redacted ... 
-    phone call, e-mail, fax and even livechat, so don't hesitate to contact us!\nSign up for our Newsletter\nSubscribe to our newsletter to stay up to date with the latest products from OpticsPlanet\nSIGN UP\nWhy Buy From Us?\nFree Shipping on Most Orders\nNo Sales Tax for Most Orders\nSafe & Secure Shopping\nCustomer Feedback\nWe Value Your Privacy\nCustomer Service\nReturns & Exchanges\nShipping Policy\nContact Us\nHours of Operation\n9am - 5:30pm CT Mon-Fri (Calls, Chats & Emails)\n\u00a9 Copyright 1999-2017 OpticsPlanet"
-}
-```
-
+### Description Parsing
+Due to limitations in the API's item description data, Selenium is used to scrape the full item description from the listing URL.
 
 ## Future Work
-- Finding the length of time an item was listed before it was sold would be a fantastic statistic to have. This would allow for a profound recognition of what items are selling well.
-    - This would only matter for production key calls, as sandbox listing dates most likely hardly mean anything.
-    -  This would likely involve using a Sell API or Analytics API call.
-- For production keysets API usage ratings must be obeyed. Production development will need caching and retry mechanisms to handle rate limit exceedances gracefully. 
-- This is SLOW. Look into threading requests or implementing multiprocessing techniques. 
+- Implement tracking for item listing duration (time until sold).
+- Optimize for production API usage, including caching and retry mechanisms. Though, production API usage will certainly be denied by eBay given the scope of this project.
+- Improve performance through threading or multiprocessing techniques.
+
+## Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+[Insert your chosen license here]
