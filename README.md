@@ -77,7 +77,7 @@ Extend this list with items necessary for a diverse model training dataset. Form
 ## Why eBay?
 
 eBay was chosen for this project due to several advantages:
-1. Open-Source API Support
+1. Open API Sandbox Support
 2. Extensive Developer Support
 3. Vast and High-Quality Data
 4. RESTful APIs (offering scalability, atomicity, flexibility, and performance)
