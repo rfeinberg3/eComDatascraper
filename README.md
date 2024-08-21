@@ -1,7 +1,7 @@
 # eCom Item Data Scraper
 
 ## Overview
-This project is a data scraper for eBay, designed to collect item data for model training purposes. It uses eBay's Sandbox environment APIs to gather diverse and high-quality e-commerce data.
+This project is a data scraper for eBay, designed to collect item data for model training purposes. It uses eBay's Sandbox environment APIs to gather diverse e-commerce data.
 
 ## Key Features
 - Utilizes eBay's Browse API for efficient data collection
