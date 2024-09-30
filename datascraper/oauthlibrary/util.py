@@ -4,7 +4,7 @@ class Util():
     '''
       Extracts the list of keyset credentials from your app config file. \n
     You can generate a keyset on eBay's developer page here: https://developer.ebay.com/my/keys. \n
-    You must place your keysets into the keyset_config.json file with the following format: \n
+    You must place your keysets into the `config/account-credentials.json` file with the following format: \n
     { \n
     "Keyset-Name": 
         {
