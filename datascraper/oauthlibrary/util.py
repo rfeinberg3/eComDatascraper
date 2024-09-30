@@ -16,7 +16,7 @@ class Util():
     }
 
     Args:  
-        keyset (str): Name of your keyset
+        keyset (str): Name of your keyset (e.g. "Keyset-Name", "DataScraper", etc)
         keysetConfigPath (str): Path to you keyset config file containing your keyset credentails.
             format: Path/To/Your/keyset_config.json
     '''
