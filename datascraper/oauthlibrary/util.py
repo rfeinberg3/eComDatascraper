@@ -30,7 +30,7 @@ class Util():
         from the keyset_config.json file.
 
         Returns:
-            A dictionary with key="name_of_keyset", value=tuple(credentials).
+            A dictionary with the format {key="name_of_keyset" : value=tuple(credentials)}.
         '''
         with open(self.keysetConfigPath, 'r') as file:
             if self.keysetConfigPath.endswith('.json'):
@@ -47,7 +47,7 @@ class Util():
         Args:
             content: json object with keyset credentials
         Returns:
-            A dictionary with key="name_of_keyset", value=tuple(credentials). 
+            A dictionary with the format {key="name_of_keyset" : value=tuple(credentials)}. 
         '''
         for key in content:
             if key in [self.keyset]:     
